@@ -3,13 +3,13 @@ import { BsArrowLeftSquareFill, BsArrowRightSquareFill } from 'react-icons/bs';
 
 const sliderData = [
   {
-    url: '/v1.jpg',
+    url: '/v1.png',
   },
   {
-    url: '/v2.jpg',
+    url: '/v2.png',
   },
   {
-    url: '/v3.jpg',
+    url: '/v3.png',
   },
   {
     url: '/v4.jpg',
@@ -43,7 +43,7 @@ const Carousel = () => {
       {sliderData.map((item, index) => (
         <div key={index} className={index === slide ? 'opacity-100' : 'opacity-0'}>
           {index === slide && (
-            <img className='w-[900px] h-[500px] rounded-md' src={item.url} alt={`slide-${index}`} />
+            <img className='w-[1200px] h-[500px] rounded-md' src={item.url} alt={`slide-${index}`} />
           )}
         </div>
       ))}

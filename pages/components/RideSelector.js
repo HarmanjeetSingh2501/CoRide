@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
 import { carList } from '../../pages/data/carList';
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import Image from 'next/image';
 
 const RideSelector = (props) => {
   const [rideDuration, setRideDuration] = useState(0);
   const [selectedCar, setSelectedCar] = useState(null);
-  const [totalPassengers, setTotalPassengers] = useState(1); // Default to 1 passenger
+  const [totalPassengers, setTotalPassengers] = useState(1);
   const router = useRouter();
 
   useEffect(() => {
@@ -48,11 +48,47 @@ const RideSelector = (props) => {
       const multiplier = selectedRide ? selectedRide.multiplier : 0;
       const totalPrice = rideDuration * multiplier;
 
-      // Calculate price per passenger
       const pricePerPassenger = totalPrice / totalPassengers;
 
       props.onConfirm(selectedRide, totalPassengers, pricePerPassenger);
       router.push(`/payment/page?amount=${pricePerPassenger}`);
+    } else {
+      console.log("Please select a ride before confirming.");
+    }
+  };
+
+  const databaseShow = async () => {
+    if (selectedCar !== null) {
+      const selectedRide = carList[selectedCar];
+      const multiplier = selectedRide ? selectedRide.multiplier : 0;
+      const totalPrice = rideDuration * multiplier;
+
+      const pricePerPassenger = totalPrice / totalPassengers;
+
+      const rideData = {
+        pickupLocation: props.pickupCoordinate,
+        dropoffLocation: props.dropoffCoordinate,
+        selectedAmount: pricePerPassenger,
+      };
+
+      try {
+        const response = await fetch("/api/store-rides", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(rideData),
+        });
+
+        if (response.ok) {
+          console.log("Ride information stored successfully.");
+          router.push(`/payment/page?amount=${pricePerPassenger}`);
+        } else {
+          console.error("Failed to store ride information.");
+        }
+      } catch (error) {
+        console.error("Error making API request:", error);
+      }
     } else {
       console.log("Please select a ride before confirming.");
     }
@@ -64,7 +100,7 @@ const RideSelector = (props) => {
       <CarList>
         {carList.map((car, index) => (
           <Car key={index} onClick={() => handleCarClick(index)} selected={selectedCar === index}>
-            <Image src={car.imgUrl} alt={car.service} selected={selectedCar === index} height={110} />
+            <Image src={car.imgUrl} alt={`${car.service} car`} height={110} />
             <CarDetails>
               <Service>{car.service}</Service>
               <Time>5 min away</Time>
@@ -79,15 +115,20 @@ const RideSelector = (props) => {
         value={totalPassengers}
         onChange={(e) => setTotalPassengers(parseInt(e.target.value))}
       />
-      <ConfirmButton onClick={handleConfirm}>
+       <ButtonsContainer>
+      <ConfirmButton onClick={databaseShow}>
         Confirm {selectedCar !== null ? carList[selectedCar].service : ""}
       </ConfirmButton>
+      <ConfirmButton onClick={handleConfirm}>
+        Pay {selectedCar !== null ? carList[selectedCar].service : ""}
+      </ConfirmButton>
+      </ButtonsContainer>
     </Wrapper>
   );
 };
 
 const Wrapper = tw.div`
-  flex-1  overflow-y-scroll flex flex-col flex flex-col
+  flex-1 overflow-y-scroll flex flex-col flex flex-col
 `;
 
 const Title = tw.div`
@@ -117,11 +158,17 @@ const CarPrice = tw.div`
 `;
 
 const ConfirmButton = tw.div`
-  bg-black flex text-xl  items-center py-4 text-white mt-4 justify-center text-center m-4 transform hover:scale-95 transition cursor-pointer
+bg-black flex text-2xl items-center py-5 text-white mt-6 justify-center text-center m-4
+transform hover:scale-95 transition cursor-pointer rounded p-4
+`;
+
+const ButtonsContainer = tw.div`
+flex justify-center mt-4 
 `;
 
 const PassengerInput = tw.input`
   border p-2 m-2 text-center transform hover:scale-95 transition cursor-pointer
 `;
+
 
 export default RideSelector;

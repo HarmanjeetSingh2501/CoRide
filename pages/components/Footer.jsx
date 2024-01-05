@@ -26,15 +26,15 @@ const Footer = () => {
             <li className='p-4'>About</li>
             <li  className='p-4'>Partnerships</li>
             <li  className='p-4'>Careers</li>
-            <li  className='p-4'>Newsroom</li>
-            <li  className='p-4'>Advertising</li>
+            {/* <li  className='p-4'>Newsroom</li>
+            <li  className='p-4'>Advertising</li> */}
           </ul>
           <ul className='text-right lg:flex'>
             <li  className='p-4'>Home</li>
-            <li  className='p-4'>Destinations</li>
-            <li  className='p-4'>Travel</li>
-            <li  className='p-4'>View</li>
-            <li  className='p-4'>Book</li>
+            <li  className='p-4'>Careers</li>
+            <li  className='p-4'>Rides</li>
+            <li  className='p-4'>Cars</li>
+            <li  className='p-4'>Contact Us</li>
           </ul>
         </div>
       </div>

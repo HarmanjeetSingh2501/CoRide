@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Carousel from "./components/Carousel";
 import Footer from "./components/Footer";
+import Selects from "./components/Selects";
 
 
 const Login = () => {
@@ -29,13 +30,18 @@ const Login = () => {
                 <CenteredText>Our Vision</CenteredText>
                 <Carousel />
             </Wrapper>
+            <Wrapper>
+              <CenteredText>Our Services</CenteredText>
+            <Selects/>
+            </Wrapper>
             <Footer/>
+            
         </div>
     );
 };
 
 const Wrapper = tw.div`
-    flex flex-col h-screen w-screen bg-black p-4
+    flex flex-col h-[600] w-screen bg-black p-4
 `;
 
 const SignInButton = tw.button`
@@ -55,7 +61,7 @@ const LoginImage = tw.img`
 `;
 
 const CenteredText = tw.h2`
-    text-white text-4xl font-bold text-center my-auto
+text-white text-4xl font-bold text-center my-4
 `;
 
 export default Login;

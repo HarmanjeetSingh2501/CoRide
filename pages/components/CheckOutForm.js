@@ -55,13 +55,13 @@ const CheckOutForm = ({ amount }) => {
             // Handle the general error, e.g., show an error message to the user
         }
     };
-
+   
     return (
         <div className='flex flex-col justify-center items-center w-full mt-6'>
             <h2 className='m-5 font-bold'>Amount to pay: {amount}</h2>
             <form onSubmit={handleSubmit} className='max-w-md'>
                 <PaymentElement />
-                <button className='w-full bg-black text-white p-2 rounded-lg mt-2'>Pay</button>
+                <button className='w-full bg-black text-white p-2 rounded-lg mt-2' >Pay</button>
             </form>
         </div>
     );
